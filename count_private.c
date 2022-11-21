@@ -57,6 +57,8 @@ int main(void)
     increment = length/numberOfThreads;
     pthread_t th[numberOfThreads];
     count = 0;
+    clock_t start_sequential, end_sequential, start_multithreading, end_multithreading;
+    start_multithreading = clock();
     for (int i = 0; i < numberOfThreads; i++) {
         int* a = malloc(sizeof(int));
         *a = i * increment;
@@ -73,7 +75,16 @@ int main(void)
         globalSum += *r;
         free(r);
     }
-    printf("\nNumber of 1's is %d", count1s());
+    end_multithreading = clock();
+    start_sequential = clock();
+    printf("\nNumber of 1's counted by sequential approach: %d", count1s());
+    end_sequential = clock();
     printf("\nNumber of 1's counted by multithreading: %d", globalSum);
+    printf("\n\nstart_sequential: %d", start_sequential);
+    printf("\nend_sequential: %d", end_sequential);
+    printf("\nTime taken for sequential approach: %.3f ms\n",1000.0*(end_sequential-start_sequential)/CLOCKS_PER_SEC);
+    printf("\nstart_multithreading: %d", start_multithreading);
+    printf("\nend_multithreading: %d", end_multithreading);
+    printf("\nTime taken for multithreading approach: %.3f ms\n",1000.0*(end_multithreading-start_multithreading)/CLOCKS_PER_SEC);
     return 0;
 }
